@@ -1,38 +1,18 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import StylesDropdown from "./StylesDropdown";
-
-interface Accessory {
-  name: string;
-  checked: boolean;
-  note: string;
-}
-
-const accessories = [
-  "Tie",
-  "Handkerchief",
-  "Bowtie",
-  "Ascot",
-  "Vest",
-  "Sash",
-  "Suspenders",
-  "Other",
-];
+import { Accessory } from "../interfaces";
 
 export default function StylesForm({
   event,
   handleChange,
   close,
   styleTypes,
+  handleAccessoriesChange,
+  selectedAccessories,
+  setSelectedAccessoriesInState,
 }: any) {
-  const initialAccessoryState = useMemo(() => {
-    return accessories.map((item) => ({
-      name: item,
-      checked: false,
-      note: "",
-    }));
-  }, [accessories]);
-
-  const [accessoryState, setAccessoryState] = useState<Accessory[]>(initialAccessoryState);
+  const [accessoryState, setAccessoryState] =
+    useState<Accessory[]>(selectedAccessories);
 
   const handleAccessoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,6 +30,13 @@ export default function StylesForm({
         item.name === name ? { ...item, checked } : item
       )
     );
+  };
+
+  const handleOnSave = () => {
+    handleAccessoriesChange(accessoryState);
+    setSelectedAccessoriesInState(accessoryState);
+    //call prop func to set the selcted accs to the event object
+    close();
   };
 
   return (
@@ -115,9 +102,7 @@ export default function StylesForm({
         </div>
         <div className="mt-4 w-full px-4 flex justify-end">
           <button
-            onClick={() => {
-              close();
-            }}
+            onClick={handleOnSave}
             type="button"
             className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >

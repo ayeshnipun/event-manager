@@ -2,7 +2,14 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import StylesForm from "./StylesForm";
 
-export default function MyModal({ event, handleChange, styleTypes }: any) {
+export default function MyModal({
+  event,
+  handleChange,
+  styleTypes,
+  handleAccessoriesChange,
+  selectedAccessories,
+  setSelectedAccessoriesInState,
+}: any) {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -59,6 +66,9 @@ export default function MyModal({ event, handleChange, styleTypes }: any) {
                       styleTypes={styleTypes}
                       event={event}
                       handleChange={handleChange}
+                      handleAccessoriesChange={handleAccessoriesChange}
+                      selectedAccessories={selectedAccessories}
+                      setSelectedAccessoriesInState={setSelectedAccessoriesInState}
                       close={closeModal}
                     />
                   </div>

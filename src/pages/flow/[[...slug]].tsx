@@ -16,6 +16,8 @@ import type {
   Client,
   Address,
   CustomerMeasurement,
+  Accessory,
+  EventAccessories,
 } from "../../interfaces";
 import Stepper from "../../components/Stepper";
 import NewEventForm from "../../components/NewEventForm";
@@ -51,11 +53,9 @@ export default function Page(props: Props) {
 
   const router = useRouter();
 
-  useEffect(() => {console.log(props.styles)}, [props])
-
   // submit flow function
   const Submit = async () => {
-    console.log(event)
+    console.log(event);
     // if the event id is empty, post the new event with the new client
     if (!event.id) {
       postEvent(event, client)
@@ -116,14 +116,12 @@ export default function Page(props: Props) {
 
   // state change functions
   const handleEventChange = (e: any) => {
-    console.log(e)
     const { name, value } = e.target;
     setEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
     }));
 
-    console.log(event)
     // if the field being changed is the event date then update pickup and return dates to a week before and after the event respectively
     if (name === "date") {
       const date = new Date(value);
@@ -143,6 +141,34 @@ export default function Page(props: Props) {
       ...prevClient,
       [name]: value,
     }));
+  };
+
+  const handleAccessoriesChange = (accessories: Accessory[]) => {
+    const eventAccessories = convertToEventAccessories(accessories);
+
+    setEvent((prevEvent) => ({
+      ...prevEvent,
+      eventAccesories: eventAccessories,
+    }));
+
+    console.log(eventAccessories);
+  };
+
+  const convertToEventAccessories = (
+    accessories: Accessory[]
+  ): EventAccessories[] => {
+    const eventAccessories: EventAccessories[] = [];
+
+    for (const accessory of accessories) {
+      if (accessory.checked) {
+        eventAccessories.push({
+          accessoryId: accessory.name,
+          accessoryInfo: accessory.note,
+        });
+      }
+    }
+
+    return eventAccessories;
   };
 
   const handleClientPhysicalAddressChange = (e: any) => {
@@ -223,6 +249,7 @@ export default function Page(props: Props) {
           <NewEventForm
             event={event}
             handleChange={handleEventChange}
+            handleAccessoriesChange={handleAccessoriesChange}
             styleTypes={props.styles}
           />
         )}

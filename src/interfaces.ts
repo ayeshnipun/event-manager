@@ -11,6 +11,7 @@ export interface Event {
   coatStyle: number;
   pantStyle: number;
   shirtStyle: number;
+  eventAccesories: EventAccessories[];
 }
 
 export interface Client {
@@ -25,6 +26,17 @@ export interface Client {
   physicalAddress: Address;
   postalAddress: Address;
   customerMeasurement: CustomerMeasurement;
+}
+
+export interface EventAccessories {
+  accessoryId: string;
+  accessoryInfo: string;
+}
+
+export interface Accessory {
+  name: string;
+  checked: boolean;
+  note: string;
 }
 
 export interface Address {

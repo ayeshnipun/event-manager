@@ -157,7 +157,8 @@ export default function Confirmation({
   const getStyleCode = (style: any, id: any) => {
     const styleId = Number(id);
     const styleCode = style.filter((item: any) => item.id === styleId);
-    return 1;
+    console.log("styleCode", styleCode)
+    return styleCode[0]?.code;
   };
 
   return (

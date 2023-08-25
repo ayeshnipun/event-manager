@@ -1,7 +1,46 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Popup from "./StylesPopup";
+import { Accessory } from "../interfaces";
 
-export default function NewEventForm({ event, handleChange, styleTypes }: any) {
+const accessories = [
+  "Tie",
+  "Handkerchief",
+  "Bowtie",
+  "Ascot",
+  "Vest",
+  "Sash",
+  "Suspenders",
+  "Other",
+];
+
+export default function NewEventForm({
+  event,
+  handleChange,
+  styleTypes,
+  handleAccessoriesChange,
+}: any) {
+  //use this to retain the selected accessories
+  const [selectedAccessories, setSelectedAccessories] = useState<Accessory[]>(
+    []
+  );
+
+  useEffect(() => {
+    const initialAccessories = accessories.map((item) => ({
+      name: item,
+      checked: false,
+      note: "",
+    }));
+    setSelectedAccessories(initialAccessories);
+  }, []);
+
+  const setSelectedAccessoriesInState = (accessories: Accessory[]) => {
+    const checkedAccessories: Accessory[] = accessories.filter(
+      (accessory) => accessory.checked
+    );
+
+    setSelectedAccessories(() => accessories);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -167,6 +206,9 @@ export default function NewEventForm({ event, handleChange, styleTypes }: any) {
                 <Popup
                   styleTypes={styleTypes}
                   handleChange={handleChange}
+                  handleAccessoriesChange={handleAccessoriesChange}
+                  setSelectedAccessoriesInState={setSelectedAccessoriesInState}
+                  selectedAccessories={selectedAccessories}
                   event={event}
                 />
               </div>
